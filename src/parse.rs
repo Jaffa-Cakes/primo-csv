@@ -1,6 +1,14 @@
 use super::*;
 
+use std::{fs::read_to_string, path::Path};
+
 impl Csv {
+    pub fn parse_file<P: AsRef<Path>>(path: P, headers: bool) -> Csv {
+        let raw = read_to_string(path).unwrap();
+
+        Csv::parse(&raw, headers)
+    }
+
     pub fn parse(raw: &str, headers: bool) -> Csv {
         let mut rows: Vec<Row> = vec![];
 
@@ -35,10 +43,16 @@ mod tests {
     use super::*;
 
     #[test]
-    fn it_works() {
-        println!(
-            "{:?}",
-            Csv::parse("super,duper\r\nepic,gamer\r\nnew,lines", true)
-        );
+    fn parse() {
+        let result = Csv::parse("super,duper\r\nepic,gamer\r\nnew,lines", true);
+
+        println!("{:?}", result);
+    }
+
+    #[test]
+    fn parse_file() {
+        let result = Csv::parse_file("files/simple.csv", true);
+
+        println!("{:?}", result);
     }
 }
