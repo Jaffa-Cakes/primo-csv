@@ -2,6 +2,9 @@ use super::*;
 
 use std::{fs::read_to_string, path::Path};
 
+#[cfg(test)]
+mod tests;
+
 impl Csv {
     pub fn parse_file<P: AsRef<Path>>(path: P, headers: bool) -> Csv {
         let raw = read_to_string(path).unwrap();
@@ -35,44 +38,5 @@ impl Csv {
         };
 
         Csv { headers, rows }
-    }
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    fn get_raw(name: &str) -> String {
-        let path = format!("files/{}.csv", name);
-
-        read_to_string(path).unwrap()
-    }
-
-    #[test]
-    fn without_headers() {
-        let result = Csv::parse(&get_raw("simple"), false);
-
-        println!("{:?}", result);
-    }
-
-    #[test]
-    fn with_headers() {
-        let result = Csv::parse(&get_raw("simple"), true);
-
-        println!("{:?}", result);
-    }
-
-    #[test]
-    fn file_without_headers() {
-        let result = Csv::parse_file("files/simple.csv", false);
-
-        println!("{:?}", result);
-    }
-
-    #[test]
-    fn file_with_headers() {
-        let result = Csv::parse_file("files/simple.csv", true);
-
-        println!("{:?}", result);
     }
 }

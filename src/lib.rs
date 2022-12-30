@@ -1,4 +1,4 @@
-mod parse;
+pub mod parse;
 
 #[derive(Debug)]
 pub struct Csv {
